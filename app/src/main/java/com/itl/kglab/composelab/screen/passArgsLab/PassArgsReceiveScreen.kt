@@ -1,4 +1,4 @@
-package com.itl.kglab.composelab.screen
+package com.itl.kglab.composelab.screen.passArgsLab
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
@@ -9,10 +9,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
+/**
+ *  接收args傳遞的參數
+ */
+
 @Composable
-fun NavArgsLabScreen(
+fun PassArgsReceiveScreen(
     navController: NavController,
-    desc: String?,
+    message: String?,
     time: Long?
 ) {
     Box(
@@ -25,7 +29,7 @@ fun NavArgsLabScreen(
                 .align(Alignment.Center)
         ) {
             Text(
-                text = "Hello!! $desc",
+                text = "Got the message: $message",
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()

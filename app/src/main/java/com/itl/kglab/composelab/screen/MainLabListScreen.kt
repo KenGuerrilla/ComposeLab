@@ -22,7 +22,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
-import com.itl.kglab.composelab.Screen
 import com.itl.kglab.composelab.labItem.LabItem
 
 @Composable
@@ -38,10 +37,7 @@ fun MainLabListScreen(
             Box(
                 Modifier.clickable {
                     navController.navigate(
-                        Screen.TestLabScreen.withArgs(
-                            item.desc,
-                            System.currentTimeMillis().toString()
-                        )
+                        item.labsScreen.route
                     )
                 }
             ) {
