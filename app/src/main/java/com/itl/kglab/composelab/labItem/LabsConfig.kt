@@ -14,7 +14,7 @@ fun getLabsList(): List<LabItem> = mutableListOf(
     ),
     LabItem(
         "Layout Basic Lab",
-        "Column, Row and Box layout demo",
+        "Column, Row and Box layout demo.",
         LabsScreen.LayoutBasicLabScreen
     )
 )

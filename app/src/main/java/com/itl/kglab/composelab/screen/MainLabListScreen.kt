@@ -3,10 +3,7 @@ package com.itl.kglab.composelab.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Divider
@@ -24,6 +21,15 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import com.itl.kglab.composelab.labItem.LabItem
 
+/**
+ *
+ *  MainLabList
+ *
+ *  Note
+ *   A. 考量到Title需要做寬度限制，因此使用ConstraintLayout作為ListItem基底。
+ *
+ */
+
 @Composable
 fun MainLabListScreen(
     navController: NavController,
@@ -34,36 +40,38 @@ fun MainLabListScreen(
         itemsIndexed(
             labList
         ) { index, item ->
-            Box(
-                Modifier.clickable {
-                    navController.navigate(
-                        item.labsScreen.route
-                    )
-                }
-            ) {
-                LabListItem(title = "${index + 1} - ${item.title}", desc = item.desc)
-            }
+            LabListItem(
+                title = "${index + 1} - ${item.title}",
+                desc = item.desc,
+                modifier = Modifier
+                    .clickable {
+                        navController.navigate(
+                            item.labsScreen.route
+                        )
+                    }
+            )
+            // List邊界分切線，
             Divider(color = Color.LightGray, thickness = 1.dp)
         }
     }
 
 }
 
-
 // ListItem
 @Composable
 private fun LabListItem(
     title: String,
-    desc: String
+    desc: String,
+    modifier: Modifier = Modifier
 ) {
     // 元件ID
-    val titleBoxId = "title"
-    val descBoxId = "desc"
+    val titleId = "title"
+    val descId = "desc"
 
     // 元件關係定義
     val constraints = ConstraintSet {
-        val titleBox = createRefFor(titleBoxId)
-        val descBox = createRefFor(descBoxId)
+        val titleBox = createRefFor(titleId)
+        val descBox = createRefFor(descId)
 
         constrain(titleBox) {
             top.linkTo(descBox.top)
@@ -85,37 +93,33 @@ private fun LabListItem(
     // Layout
     ConstraintLayout(
         constraints,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(Color.White)
     ) {
 
-        // Desc Box
-        Box(
+        // Desc文字
+        Text(
+            text = desc,
+            fontSize = 16.sp,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis, // 當文字超過螢幕的處理方式
             modifier = Modifier
                 .fillMaxWidth()
-                .layoutId(descBoxId)
+                .padding(vertical = 8.dp)
+                .layoutId(descId)
                 .border(1.dp, Color.Black)
                 .padding(vertical = 20.dp, horizontal = 16.dp)
-        ) {
-            Text(
-                text = desc,
-                fontSize = 16.sp,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis, // 當文字超過螢幕的處理方式
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-        }
+        )
 
-
-        // Title Box
+        // 為了讓Title能夠Match上層寬度且靠左，因此用一個Box包覆
         Box(
             modifier = Modifier
-                .layoutId(titleBoxId)
                 .fillMaxWidth()
-                .padding(vertical = 8.dp, horizontal = 8.dp)
+                .padding(top = 8.dp, start = 8.dp, end = 8.dp)
+                .layoutId(titleId)
         ) {
+            // Title則依照內容做寬度調整
             Text(
                 text = title,
                 fontSize = 20.sp,
