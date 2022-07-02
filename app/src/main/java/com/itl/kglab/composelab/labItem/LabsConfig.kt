@@ -12,6 +12,11 @@ fun getLabsList(): List<LabItem> = mutableListOf(
         "Pass args between destinations.",
         LabsScreen.NavArgsLabScreen,
     ),
+    LabItem(
+        "Layout Basic Lab",
+        "Column, Row and Box layout demo",
+        LabsScreen.LayoutBasicLabScreen
+    )
 )
 
 data class LabItem (

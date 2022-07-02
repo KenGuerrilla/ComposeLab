@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.itl.kglab.composelab.labItem.getLabsList
 import com.itl.kglab.composelab.screen.MainLabListScreen
+import com.itl.kglab.composelab.screen.layoutLab.LayoutBasicLabScreen
 import com.itl.kglab.composelab.screen.passArgsLab.passArgsGraph
 
 @Composable
@@ -19,6 +20,10 @@ fun Navigation() {
 
         // 載入Nested Navigation
         passArgsGraph(navController)
+
+        composable(route = LabsScreen.LayoutBasicLabScreen.route) {
+            LayoutBasicLabScreen()
+        }
     }
 }
 
