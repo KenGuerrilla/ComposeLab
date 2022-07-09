@@ -7,18 +7,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import com.ramcosta.composedestinations.annotation.Destination
 
 /**
  *  接收args傳遞的參數
+ *
+ *  支援的傳入參數類型可參考：
+ *      - https://composedestinations.rafaelcosta.xyz/destination-arguments/navigation-arguments
  */
 
+@Destination
 @Composable
 fun PassArgsReceiveScreen(
-    navController: NavController,
-    message: String?,
-    time: Long?
+    inputArgs: InputArgs
 ) {
+    val defaultMsg = "This is a default message because the args message is blank."
+    val message = inputArgs.message.ifBlank { defaultMsg }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -42,7 +47,7 @@ fun PassArgsReceiveScreen(
             )
 
             Text(
-                text = "Time is $time",
+                text = "Time is ${inputArgs.time}",
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()

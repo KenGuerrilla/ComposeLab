@@ -11,22 +11,26 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.itl.kglab.composelab.screen.passArgsLab.PassArgsScreen.RECEIVE_SCREEN_ROUTE
+import com.itl.kglab.composelab.screen.destinations.PassArgsReceiveScreenDestination
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 /**
- *  使用Navigation切換畫面，且使用args傳遞參數。
  *
- *  參考資料：
- *      Navigation -
- *          https://developer.android.com/jetpack/compose/navigation
- *      儲存UI狀態 -
- *          https://developer.android.com/jetpack/compose/state#restore-ui-state
+ *  使用Compose Destination傳遞Args範例
+ *
+ *  如果有Compose Navigation傳遞Args的需求，可參考官方文件，專案實作Demo可參考先前的Commit
+ *   - https://developer.android.com/jetpack/compose/navigation
+ *
+ *  儲存UI狀態
+ *   - https://developer.android.com/jetpack/compose/state#restore-ui-state
+ *
  */
 
+@Destination
 @Composable
 fun PassArgsInputScreen(
-    navController: NavController
+    navigator: DestinationsNavigator,
 ) {
     // 跳轉畫面無需儲存的資料使用remember
     var textFieldState by remember {
@@ -68,30 +72,13 @@ fun PassArgsInputScreen(
             val time = System.currentTimeMillis()
             timeStampState = "上次記錄時間：${time}"
             val args = InputArgs(textFieldState, time)
-//            navigateWithSimpleURL(navController = navController, args)
-            navigateWithURL(navController, args)
+            navigator.navigate(
+                PassArgsReceiveScreenDestination(
+                    args
+                )
+            )
         }) {
             Text(text = "跳轉到下個畫面")
         }
     }
-}
-
-// 簡易URL
-//  - 參數必須依照順序且不能缺少或空白，否則Navigate的路徑會噴錯誤
-private fun navigateWithSimpleURL(navController: NavController, args: InputArgs) {
-    val message = args.message.ifBlank { "Message is blank." } // message不能為空白，否則URL會出錯
-    navController.navigate("receive_screen/$message/${args.time}")
-}
-
-// Optional navigation arguments 格式化URL
-//  - 欄位可選的URL，彈性較高且缺少的欄位會使用defaultValue數值替代，因此必須設定defaultValue。
-private fun navigateWithURL(navController: NavController, args: InputArgs) {
-    // 將參數格式化為URL字串
-    val route = buildString {
-        append(RECEIVE_SCREEN_ROUTE)
-        append("?time=${args.time}")
-        if (args.message.isNotBlank()) {append("&message=${args.message}")}
-    }
-    // 執行跳轉
-    navController.navigate(route)
 }

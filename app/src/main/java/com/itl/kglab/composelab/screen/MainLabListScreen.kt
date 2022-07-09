@@ -18,8 +18,10 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
-import androidx.navigation.NavController
-import com.itl.kglab.composelab.labItem.LabItem
+import com.itl.kglab.composelab.labItem.getLabsList
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 /**
  *
@@ -30,12 +32,14 @@ import com.itl.kglab.composelab.labItem.LabItem
  *
  */
 
+// 設定為起始畫面
+@RootNavGraph(start = true)
+@Destination
 @Composable
 fun MainLabListScreen(
-    navController: NavController,
-    labList: List<LabItem>
+    navigator: DestinationsNavigator // 改為使用DestinationsNavigator
 ) {
-
+    val labList = getLabsList()
     LazyColumn {
         itemsIndexed(
             labList
@@ -45,16 +49,13 @@ fun MainLabListScreen(
                 desc = item.desc,
                 modifier = Modifier
                     .clickable {
-                        navController.navigate(
-                            item.labsScreen.route
-                        )
+                        navigator.navigate(item.destination)
                     }
             )
             // List邊界分切線，
             Divider(color = Color.LightGray, thickness = 1.dp)
         }
     }
-
 }
 
 // ListItem
